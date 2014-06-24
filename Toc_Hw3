@@ -6,16 +6,6 @@
 //Compilation	: ant -buildfile /home/TOC/ANT/toc3/build.xml build -Darg F74001048
 //Date		: 2014/06/25
 
-
-
-
-
-
-
-
-
-
-
 import java.io.*;
 import org.json.*;
 import java.net.*;
