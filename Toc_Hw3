@@ -1,0 +1,42 @@
+import java.io.*;
+import org.json.*;
+import java.net.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class TocHw3 
+{	
+	public static void main(String[] args) throws	IOException ,	JSONException
+	{
+		//args[0]:URL,args[1]:鄉鎮市區,args[2]:土地區段位置或建物區門牌,args[3]:交易年月
+		URL url=new URL(args[0]);
+		InputStream is = url.openStream();
+		InputStreamReader isr = new InputStreamReader(is,"UTF-8");
+		JSONTokener token = new JSONTokener(isr);
+		JSONArray data = new JSONArray(token);
+		
+		Pattern pat1=Pattern.compile(args[1]);
+		Pattern pat2=Pattern.compile(args[2]);		
+		
+		int date = Integer.parseInt(args[3])*100;
+		int averagePrice=0,countNumber=0,totalPrice=0;
+		int i=0;
+		
+		while(i<data.length())
+		{
+			JSONObject obj = data.getJSONObject(i);
+			Matcher mat1 = pat1.matcher(obj.getString("鄉鎮市區"));
+			Matcher mat2 = pat2.matcher(obj.getString("土地區段位置或建物區門牌"));
+			
+			if(mat1.find() && mat2.find() && obj.getInt("交易年月")>=date)
+			{
+				totalPrice = totalPrice + obj.getInt("總價元");
+				countNumber++;
+			}
+			i++;
+		}	
+		averagePrice = totalPrice/countNumber;
+		System.out.println("Average="+averagePrice);
+	}
+
+}
